@@ -8,7 +8,7 @@ variable "location" {
 }
 
 variable "count" {
-  default = "1"
+  default = 1
 }
 
 variable "name_prefix" {
@@ -41,7 +41,7 @@ variable "use_random_password" {
 
 variable "key_vault_pw" {
   default     = ""
-  description = "Pass in a custom password, such as an Azure Key Vault data reference."
+  description = "Pass in a custom password, such as an Azure Key Vault data reference. Must set use_random_password to false."
 }
 
 # Compute default name values
@@ -55,12 +55,10 @@ locals {
   name_prefix = "${var.name_prefix != "" ? var.name_prefix : local.default_name_prefix}"
   name        = "${local.name_prefix}${local.type}"
 
-  random_pw          = "${sha256(bcrypt(random_string.password.result))}"
-  key_vault_pw       = "${data.azurerm_key_vault_secret.admin_password.value}"
-  sql_admin_password = "${var.use_random_password == true ? local.random_pw : var.key_vault_pw}"
+  sql_admin_password = "${var.use_random_password ? random_string.password.result : var.key_vault_pw}"
 }
 
 # This module provides a data map output to lookup naming standard references
 module "naming" {
-  source = "git::ssh://git@github.com/clearesult/cr-azurerm-naming.git?ref=v1.0"
+  source = "git::https://github.com/CLEAResult/cr-azurerm-naming.git?ref=v1.0.1"
 }
