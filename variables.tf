@@ -36,10 +36,10 @@ variable "sql_admin_username" {
 
 variable "use_random_password" {
   default     = true
-  description = "Default is true. If true, deploy the Azure SQL server with a randomly created password that will be visible in the state.  If false, you must have a valid vault_name and secret_name variable entered, which will supply the password."
+  description = "Default is true. If true, deploy the Azure SQL server with a randomly created password that will be visible in the state.  If false, you must supply a valid password in the sql_admin_password variable.  This could be, for example, an Azure key vault data reference."
 }
 
-variable "key_vault_pw" {
+variable "sql_admin_password" {
   default     = ""
   description = "Pass in a custom password, such as an Azure Key Vault data reference. Must set use_random_password to false."
 }
@@ -55,7 +55,7 @@ locals {
   name_prefix = "${var.name_prefix != "" ? var.name_prefix : local.default_name_prefix}"
   name        = "${local.name_prefix}${local.type}"
 
-  sql_admin_password = "${var.use_random_password ? random_string.password.result : var.key_vault_pw}"
+  sql_admin_password = "${var.use_random_password ? random_string.password.result : var.sql_admin_password}"
 }
 
 # This module provides a data map output to lookup naming standard references

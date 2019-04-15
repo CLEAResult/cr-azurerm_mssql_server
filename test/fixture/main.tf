@@ -17,5 +17,5 @@ module "sql-server" {
   rg_name            = "${basename(azurerm_resource_group.rg.id)}"
   location           = "${var.location}"
   sql_admin_username = "${var.sql_admin_username}"
-  key_vault_pw       = "${var.sql_admin_password}"
+  sql_admin_password = "${var.sql_admin_password}"
 }
