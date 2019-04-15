@@ -1,5 +1,5 @@
 resource_group_name = "mssqlResourceGroup"
-location = "westeurope"
+location = "westus"
 db_name = "mydatabase"
 sql_admin_username = "azureuser"
 sql_password = "P@ssw0rd12345!"
