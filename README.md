@@ -9,11 +9,24 @@ This Terraform module creates a basic Azure SQL Database.
 ## Usage
 
 ```hcl
+provider "random" {
+  version = "~> 1.0"
+}
+
+resource "random_id" "name" {
+  byte_length = 8
+}
+
+resource "azurerm_resource_group" "rg" {
+  name     = "${var.rg_name}-${random_id.name.hex}"
+  location = "${var.location}"
+}
+
 module "sql-server" {
   source             = "git::https://github.com/CLEAResult/cr-azurerm_mssql_server.git?ref=v1.3.1"
-  rgid               = "${var.rgid}"
+  rgid               = "test"
   rg_name            = "${basename(azurerm_resource_group.rg.id)}"
-  location           = "${var.location}"
+  location           = "westus"
   sql_admin_username = "mradministrator"
   sql_admin_password = "P@ssw0rd12345!"
 }
