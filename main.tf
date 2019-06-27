@@ -6,19 +6,23 @@ resource "random_string" "password" {
 }
 
 resource "azurerm_sql_server" "server" {
-  name                         = "${local.name}${format("%03d", count.index + 1)}"
-  count                        = "${var.count}"
-  resource_group_name          = "${var.rg_name}"
-  location                     = "${var.location}"
-  version                      = "${var.server_version}"
-  administrator_login          = "${var.sql_admin_username}"
-  administrator_login_password = "${local.sql_admin_password}"
+  name                         = format("%s%03d", local.name, count.index + 1)
+  count                        = var.num
+  resource_group_name          = var.rg_name
+  location                     = var.location
+  version                      = var.server_version
+  administrator_login          = var.sql_admin_username
+  administrator_login_password = local.sql_admin_password
 
   tags = {
     InfrastructureAsCode = "True"
   }
 
   lifecycle {
-    ignore_changes = ["administrator_login_password", "tags"]
+    ignore_changes = [
+      administrator_login_password,
+      tags,
+    ]
   }
 }
+

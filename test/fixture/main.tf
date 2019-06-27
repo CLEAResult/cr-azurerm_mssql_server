@@ -1,5 +1,5 @@
 provider "random" {
-  version = "~> 1.0"
+  version = "~> 2.1"
 }
 
 resource "random_id" "name" {
@@ -8,14 +8,15 @@ resource "random_id" "name" {
 
 resource "azurerm_resource_group" "rg" {
   name     = "${var.rg_name}-${random_id.name.hex}"
-  location = "${var.location}"
+  location = var.location
 }
 
 module "sql-server" {
   source             = "../../"
-  rgid               = "${var.rgid}"
-  rg_name            = "${basename(azurerm_resource_group.rg.id)}"
-  location           = "${var.location}"
-  sql_admin_username = "${var.sql_admin_username}"
-  sql_admin_password = "${var.sql_admin_password}"
+  rgid               = var.rgid
+  rg_name            = basename(azurerm_resource_group.rg.id)
+  location           = var.location
+  sql_admin_username = var.sql_admin_username
+  sql_admin_password = var.sql_admin_password
 }
+

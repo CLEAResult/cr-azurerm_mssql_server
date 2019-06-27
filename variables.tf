@@ -7,7 +7,7 @@ variable "location" {
   description = "Location for resources to be created"
 }
 
-variable "count" {
+variable "num" {
   default = 1
 }
 
@@ -46,19 +46,20 @@ variable "sql_admin_password" {
 
 # Compute default name values
 locals {
-  env_id = "${lookup(module.naming.env-map, var.environment, "ENV")}"
-  type   = "${lookup(module.naming.type-map, "azurerm_sql_server", "TYP")}"
+  env_id = lookup(module.naming.env-map, var.environment, "ENV")
+  type   = lookup(module.naming.type-map, "azurerm_sql_server", "TYP")
 
-  default_rgid        = "${var.rgid != "" ? var.rgid : "NORGID"}"
+  default_rgid        = var.rgid != "" ? var.rgid : "NORGID"
   default_name_prefix = "c${local.default_rgid}${local.env_id}"
 
-  name_prefix = "${var.name_prefix != "" ? var.name_prefix : local.default_name_prefix}"
+  name_prefix = var.name_prefix != "" ? var.name_prefix : local.default_name_prefix
   name        = "${local.name_prefix}${local.type}"
 
-  sql_admin_password = "${var.use_random_password ? random_string.password.result : var.sql_admin_password}"
+  sql_admin_password = var.use_random_password ? random_string.password.result : var.sql_admin_password
 }
 
 # This module provides a data map output to lookup naming standard references
 module "naming" {
-  source = "git::https://github.com/CLEAResult/cr-azurerm-naming.git?ref=v1.0.1"
+  source = "git::https://github.com/CLEAResult/cr-azurerm-naming.git?ref=v1.1.0"
 }
+
