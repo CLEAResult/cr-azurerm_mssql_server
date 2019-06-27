@@ -7,7 +7,7 @@ resource "random_id" "name" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.rg_name}-${random_id.name.hex}"
+  name     = format("%s-%s", var.rg_name, random_id.name.hex)
   location = var.location
 }
 
