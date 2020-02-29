@@ -1,8 +1,8 @@
 # can be used for additional accounts
-resource "random_string" "password" {
+resource "random_password" "password" {
   length           = 16
   special          = true
-  override_special = "/@\" "
+  override_special = "#$%&-_+<>:"
 }
 
 resource "azurerm_sql_server" "server" {
