@@ -55,11 +55,11 @@ locals {
   name_prefix = var.name_prefix != "" ? var.name_prefix : local.default_name_prefix
   name        = format("%s%s", local.name_prefix, local.type)
 
-  sql_admin_password = var.use_random_password ? random_string.password.result : var.sql_admin_password
+  sql_admin_password = var.use_random_password ? random_password.password.result : var.sql_admin_password
 }
 
 # This module provides a data map output to lookup naming standard references
 module "naming" {
-  source = "git::https://github.com/CLEAResult/cr-azurerm-naming.git?ref=v1.1.0"
+  source = "git::https://github.com/CLEAResult/cr-azurerm-naming.git?ref=v1.1.2"
 }
 
